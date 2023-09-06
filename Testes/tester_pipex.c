@@ -6,12 +6,15 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:00:56 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/08/31 22:52:44 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:06:03 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minunit.h"
 #include "../pipex.h"
+#include <stdio> //popen
+
+
 
 MU_TEST(funtion_should_read_one_line)
 {
