@@ -1,0 +1,12 @@
+total 124
+drwxrwxrwx 1 thaisnishimoto thaisnishimoto   4096 Sep 20 11:27 .
+drwxrwxrwx 1 thaisnishimoto thaisnishimoto   4096 Sep 20 11:26 ..
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto    160 Sep 19 18:16 Makefile
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto    176 Sep 19 18:16 README.md
+-r-xr-xr-x 1 thaisnishimoto thaisnishimoto      0 Sep 20 00:01 file_x
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto    108 Sep 19 18:16 fn_allowed
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto     10 Sep 20 00:01 fn_used
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto      0 Sep 20 11:27 infile
+drwxrwxrwx 1 thaisnishimoto thaisnishimoto   4096 Sep 20 11:27 output
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto 104560 Sep 20 11:26 pipex
+-rwxrwxrwx 1 thaisnishimoto thaisnishimoto  18826 Sep 19 18:16 test.sh

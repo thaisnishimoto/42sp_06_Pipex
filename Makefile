@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/01 12:48:28 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/09/01 18:42:18 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/09/13 16:20:23 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ run:
 
 leak:
 	@echo "Arguments: IN, CMD1, CMD2 and OUT"
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(IN) $(CMD1) $(CMD2) $(OUT)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes ./$(NAME) $(IN) $(CMD1) $(CMD2) $(OUT)
 	
 #================================LEAKS=========================================#
 

@@ -1,4 +1,4 @@
-#**************************************************************************** #
+#*************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,22 +6,25 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/28 20:22:45 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/06/10 16:29:34 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/09/12 00:14:46 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = program
+NAME = tester
 CC = cc
-CFLAGS = -Wall -Wextra -Werror 
-SRC = ../get_next_line.c ../get_next_line_utils.c
-BONUS = $(wildcard ../*bonus.c)
+CFLAGS = -Wall -Wextra -Werror -g3 
+SRC = $(wildcard *.c)
+BONUS = $(wildcard *bonus.c)
+LIBFT = -L../libft -lft
 
-# Default BUFFER_SIZE value
-BUFFER_SIZE ?= 1
+all: pipex $(NAME)
+	./$(NAME)
+	make --no-print clean
+pipex:
+	$(MAKE) -C ../ 
 
-all:
-	$(CC) -g3 $(CFLAGS)-D BUFFER_SIZE=$(BUFFER_SIZE) test_gnl.c $(SRC) -lrt -lm -o $(NAME)
-	./program
+$(NAME): $(SRC)
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC) -lrt -lm $(LIBFT)
 
 bonus:
 	$(CC) -g3 $(CFLAGS)-D BUFFER_SIZE=$(BUFFER_SIZE) test_gnl.c $(BONUS) -lrt -lm -o $(NAME)
@@ -29,6 +32,11 @@ bonus:
 
 clean:
 	rm -f *.o
+	rm -f ../outfile*
 
 fclean: clean
-	rm -f program
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all pipex bonus clean fclean re
