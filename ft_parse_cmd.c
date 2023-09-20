@@ -6,13 +6,13 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/20 11:22:32 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:39:21 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
 
-size_t	ft_count_args(char const *s, char c);
+size_t	ft_count_args(char const *s);
 size_t	ft_arg_len(char const *str, char c);
 
 char	*ft_add_path(char *path, char *cmd)
@@ -65,12 +65,12 @@ char	**ft_split_cmd(char const *s, char c)
 
 	if (s == NULL)
 		return (NULL);
-	array = malloc((ft_count_args(s, c) + 1) * sizeof(char *));
+	array = malloc((ft_count_args(s) + 1) * sizeof(char *));
 	if (array == NULL)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (j < ft_count_args(s, c))
+	while (j < ft_count_args(s))
 	{
 		while (s[i] == c)
 			i++;
@@ -87,7 +87,7 @@ char	**ft_split_cmd(char const *s, char c)
 	return (array);
 }
 
-size_t	ft_count_args(char const *s, char c)
+size_t	ft_count_args(char const *s)
 {
 	size_t	index;
 	size_t	count;
@@ -96,9 +96,9 @@ size_t	ft_count_args(char const *s, char c)
 	count = 0;
 	while (s[index])
 	{
-		while (s[index] == c)
+		while (s[index] == ' ')
 			index++;
-		if (s[index] && s[index] != c)
+		if (s[index] && s[index] != ' ')
 			count++;
 		if (s[index] == '\'')
 		{
@@ -114,7 +114,7 @@ size_t	ft_count_args(char const *s, char c)
 				index++;
 			index++;
 		}
-		while (s[index] && s[index] != c)
+		while (s[index] && s[index] != ' ')
 			index++;
 	}
 	return (count);
