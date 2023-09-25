@@ -6,14 +6,73 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/20 18:39:21 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:33:53 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
+#include "pipex.h"
 
-size_t	ft_count_args(char const *s);
+int	ft_count_args(char const *s, char c);
 size_t	ft_arg_len(char const *str, char c);
+char	*ft_trim_quotes(char *s1, const char *set);
+
+void	ft_split_paths(char const *s, char c, t_cmd *cmd)
+{
+	int		i;
+	int		j;
+
+	cmd->path = malloc((ft_count_args(s, c) + 1) * sizeof(char *));
+	if (cmd->path == NULL)
+		ft_handle_perror("malloc failed");
+	i = 0;
+	j = 0;
+	while (j < ft_count_args(s, c))
+	{
+		while (s[i] == c)
+			i++;
+		cmd->path[j] = malloc((ft_arg_len(&s[i], c) + 2) * sizeof(char));
+		if (cmd->path[j] == NULL)		
+		{
+			ft_free_matrix(cmd->path, --j);
+			ft_handle_perror("malloc failed");
+		}
+		ft_strlcpy(cmd->path[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		ft_strlcat(cmd->path[j], "/", ft_arg_len(&s[i], c) + 2);
+		i = i + ft_arg_len(&s[i], c);
+		j++;
+	}
+	cmd->path[j] = NULL;
+}
+
+void	ft_split_cmd(char const *s, char c, t_cmd *cmd)
+{
+	int		i;
+	int		j;
+
+	cmd->args = malloc((ft_count_args(s, ' ') + 1) * sizeof(char *));
+	if (cmd->args == NULL)
+		ft_handle_perror("malloc failed");
+	i = 0;
+	j = 0;
+	while (j < ft_count_args(s, ' '))
+	{
+		while (s[i] == c)
+			i++;
+		cmd->args[j] = malloc((ft_arg_len(&s[i], c) + 1) * sizeof(char));
+		if (cmd->args[j] == NULL)
+		{
+			ft_free_matrix(cmd->args, --j);
+			ft_handle_perror("malloc failed");
+		}
+		ft_strlcpy(cmd->args[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		if ((ft_strlen(cmd->args[j]) > 2) && (cmd->args[j][0] == '\'' || cmd->args[j][0] == '\"'))
+			cmd->args[j] = ft_trim_quotes(cmd->args[j], "\'\"");
+		i = i + ft_arg_len(&s[i], c);
+		j++;
+	}
+	cmd->args[j] = NULL;
+}
 
 char	*ft_add_path(char *path, char *cmd)
 {
@@ -57,37 +116,7 @@ char	*ft_trim_quotes(char *s1, const char *set)
 	return (ptr);
 }
 
-char	**ft_split_cmd(char const *s, char c)
-{
-	size_t		i;
-	size_t		j;
-	char		**array;
-
-	if (s == NULL)
-		return (NULL);
-	array = malloc((ft_count_args(s) + 1) * sizeof(char *));
-	if (array == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (j < ft_count_args(s))
-	{
-		while (s[i] == c)
-			i++;
-		array[j] = malloc((ft_arg_len(&s[i], c) + 1) * sizeof(char));
-		if (array[j] == NULL)
-			return (NULL);
-		ft_strlcpy(array[j], &s[i], ft_arg_len(&s[i], c) + 1);
-		if ((ft_strlen(array[j]) > 2) && (array[j][0] == '\'' || array[j][0] == '\"'))
-			array[j] = ft_trim_quotes(array[j], "\'\"");
-		i = i + ft_arg_len(&s[i], c);
-		j++;
-	}
-	array[j] = NULL;
-	return (array);
-}
-
-size_t	ft_count_args(char const *s)
+int	ft_count_args(char const *s, char c)
 {
 	size_t	index;
 	size_t	count;
@@ -96,9 +125,9 @@ size_t	ft_count_args(char const *s)
 	count = 0;
 	while (s[index])
 	{
-		while (s[index] == ' ')
+		while (s[index] == c)
 			index++;
-		if (s[index] && s[index] != ' ')
+		if (s[index] && s[index] != c)
 			count++;
 		if (s[index] == '\'')
 		{
@@ -114,7 +143,7 @@ size_t	ft_count_args(char const *s)
 				index++;
 			index++;
 		}
-		while (s[index] && s[index] != ' ')
+		while (s[index] && s[index] != c)
 			index++;
 	}
 	return (count);

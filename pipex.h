@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/20 18:42:08 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/22 19:39:19 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ typedef struct s_fork
         int     exit_code;
 }       t_fork;
 
+typedef struct s_cmd
+{
+        char     **path;
+        char     **args;
+        char    *pathname;
+        int	count;
+}       t_cmd;
+
+void	ft_handle_args(int argc, char *argv[], char *envp[], t_cmd *cmd);
+
+/*Parse functions*/
+void	ft_split_paths(char const *s, char c, t_cmd *cmd);
+
+/*Exit functions*/
+void    ft_free_matrix(char **array, int j); 
 void    ft_handle_perror(char *perror_msg); 
 void    ft_handle_error(char *error_msg);
 void    ft_close_pipe(t_fd *fd);
