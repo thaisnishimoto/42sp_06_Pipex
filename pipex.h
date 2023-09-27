@@ -6,14 +6,14 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/22 19:39:19 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:19:06 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include <unistd.h> //pipe, dup
+# include <unistd.h> //pipe, dup, access
 # include <fcntl.h> //open
 # include <sys/types.h> //pid_t
 # include <sys/wait.h> //wait
@@ -38,16 +38,25 @@ typedef struct s_fork
 
 typedef struct s_cmd
 {
-        char     **path;
-        char     **args;
         char    *pathname;
-        int	count;
+        char     **args;
+        int	args_count;
+        int	exit_code;
 }       t_cmd;
 
-void	ft_handle_args(int argc, char *argv[], char *envp[], t_cmd *cmd);
+typedef struct s_data
+{
+        char     **path;
+        int	path_count;
+        int	cmd_count;
+        t_cmd     cmd;
+}       t_data;
+
+void	ft_handle_args(int argc, char *argv[], char *envp[], t_data *pipe);
 
 /*Parse functions*/
-void	ft_split_paths(char const *s, char c, t_cmd *cmd);
+int	ft_count_args(const char *s, char c);
+void	ft_split_paths(char const *s, char c, t_data *pipe);
 
 /*Exit functions*/
 void    ft_free_matrix(char **array, int j); 

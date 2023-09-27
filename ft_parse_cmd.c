@@ -6,43 +6,42 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/22 16:33:53 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:32:58 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft/libft.h"
 #include "pipex.h"
 
-int	ft_count_args(char const *s, char c);
 size_t	ft_arg_len(char const *str, char c);
 char	*ft_trim_quotes(char *s1, const char *set);
 
-void	ft_split_paths(char const *s, char c, t_cmd *cmd)
+void	ft_split_paths(char const *s, char c, t_data *pipex)
 {
 	int		i;
 	int		j;
 
-	cmd->path = malloc((ft_count_args(s, c) + 1) * sizeof(char *));
-	if (cmd->path == NULL)
+	pipex->path = malloc((pipex->path_count + 1) * sizeof(char *));
+	if (pipex->path == NULL)
 		ft_handle_perror("malloc failed");
 	i = 0;
 	j = 0;
-	while (j < ft_count_args(s, c))
+	while (j < pipex->path_count)
 	{
 		while (s[i] == c)
 			i++;
-		cmd->path[j] = malloc((ft_arg_len(&s[i], c) + 2) * sizeof(char));
-		if (cmd->path[j] == NULL)		
+		pipex->path[j] = malloc((ft_arg_len(&s[i], c) + 2) * sizeof(char));
+		if (pipex->path[j] == NULL)		
 		{
-			ft_free_matrix(cmd->path, --j);
+			ft_free_matrix(pipex->path, --j);
 			ft_handle_perror("malloc failed");
 		}
-		ft_strlcpy(cmd->path[j], &s[i], ft_arg_len(&s[i], c) + 1);
-		ft_strlcat(cmd->path[j], "/", ft_arg_len(&s[i], c) + 2);
+		ft_strlcpy(pipex->path[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		ft_strlcat(pipex->path[j], "/", ft_arg_len(&s[i], c) + 2);
 		i = i + ft_arg_len(&s[i], c);
 		j++;
 	}
-	cmd->path[j] = NULL;
+	pipex->path[j] = NULL;
 }
 
 void	ft_split_cmd(char const *s, char c, t_cmd *cmd)
