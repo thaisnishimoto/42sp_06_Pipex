@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/26 16:19:06 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:17:03 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_cmd
 {
         char    *pathname;
         char     **args;
+	char	*failed;
         int	args_count;
         int	exit_code;
 }       t_cmd;

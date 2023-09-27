@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/26 22:32:58 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:51:47 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,18 +173,3 @@ size_t	ft_arg_len(char const *str, char c)
 	}
 	return (len);
 }
-
-//int	main(int argc, char *argv[])
-//{
-//	char	**array;
-//	int	i;
-//
-//	array = ft_split_cmd(argv[1], ' ');
-//	i = 0;
-//	while(array[i])
-//	{
-//		ft_printf("array[%d]: %s\n", i, array[i]);
-//		i++;
-//	}
-//	return (0);
-//}

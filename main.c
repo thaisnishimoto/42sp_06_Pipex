@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/27 02:12:13 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:20:29 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,17 @@ void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 	if (fd.infile < 0)
 	{
 		ft_free_matrix(pipex->path, pipex->path_count);
-		ft_handle_perror("open infile error");
+		ft_printf("%s: ", argv[1]);
+		ft_handle_perror("");
 	}
 	close(fd.pipe[0]);
 	pipex->cmd.args_count = ft_count_args(argv[2], ' ');
 	ft_split_cmd(argv[2], ' ', &pipex->cmd);
 	test_cmd_permission(pipex->path, &pipex->cmd);
+	if (pipex->cmd.exit_code == 127)
+		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
+	if (pipex->cmd.exit_code == 126)
+		ft_printf("%s: permission denied\n", pipex->cmd.args[0]);
 	if (pipex->cmd.exit_code == 0)
 	{
 		redirect_stdin_stdout(fd.infile, fd.pipe[1]);
@@ -99,12 +104,17 @@ void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 	if (fd.outfile < 0)
 	{
 		ft_free_matrix(pipex->path, pipex->path_count);
-		ft_handle_perror("open outfile error");
+		ft_printf("%s: ", argv[4]);
+		ft_handle_perror("");
 	}
 	close(fd.pipe[1]);
 	pipex->cmd.args_count = ft_count_args(argv[3], ' ');
 	ft_split_cmd(argv[3], ' ', &pipex->cmd);
 	test_cmd_permission(pipex->path, &pipex->cmd);
+	if (pipex->cmd.exit_code == 127)
+		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
+	if (pipex->cmd.exit_code == 126)
+		ft_printf("%s: permission denied\n", pipex->cmd.args[0]);
 	if (pipex->cmd.exit_code == 0)
 	{
 		redirect_stdin_stdout(fd.pipe[0], fd.outfile);
