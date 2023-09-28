@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:00:56 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/20 11:38:46 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:17:48 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,27 @@ MU_TEST(funtion_should_try_run_command_without_x_permission)
 	free(diff_result);
 }
 
+MU_TEST(funtion_should_try_run_command_with_path)
+{
+	char    *expected = "Files ../outfile9 and ../outfile_expected9 are identical\n";
+	char    *outfile;
+	char    *diff_result;
+
+	printf("\n------------------------\n");
+	printf(" TEST 9: 1st command with path");
+	printf("\n------------------------\n");
+
+	exec_command("< ../infile ///////usr/bin/grep 1 | wc -l > ../outfile_expected9");
+	exec_command("../pipex ../infile \"///////usr/bin/grep 1\" \"wc -l\" ../outfile9");
+
+	diff_result = exec_command("diff -s ../outfile9 ../outfile_expected9");
+	ft_printf("%s", diff_result);
+	outfile = exec_command("cat ../outfile9");
+	ft_printf("Pipex outfile: %s\n", outfile);
+	mu_assert_string_eq(expected, diff_result);
+	free(diff_result);
+}
+
 MU_TEST_SUITE(test_suite)
 {
 	MU_RUN_TEST(funtion_should_run_command_ls_l_wc_l);
@@ -227,6 +248,7 @@ MU_TEST_SUITE(test_suite)
 	MU_RUN_TEST(funtion_should_create_outfile_and_run_2nd_command);
 	MU_RUN_TEST(funtion_should_run_command_echo_tr_space);
 	MU_RUN_TEST(funtion_should_try_run_command_without_x_permission);
+	MU_RUN_TEST(funtion_should_try_run_command_with_path);
 }
 
 int	main(void)
