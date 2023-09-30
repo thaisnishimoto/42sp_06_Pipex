@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 00:23:34 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/08/04 14:51:45 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:01:42 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_traverse_format_str(const char *str, va_list args)
 			len++;
 		}
 		else if (str[i++] == '%')
-		{		
+		{
 			if (ft_check_flags(&str[i]) == 1)
 				flag_buffer = ft_get_flag(&str[i++]);
 			len += ft_print_format(&str[i], args, flag_buffer);

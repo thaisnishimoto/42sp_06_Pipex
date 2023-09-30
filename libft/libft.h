@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:19:06 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/27 15:46:03 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:03:00 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		ft_atoi(const char *nptr);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
-char	*ft_strjoin(char *s1, const char *s2);
+char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
@@ -93,17 +93,17 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*ft_get_next_line(int fd);
 char	*ft_utoa(unsigned int n);
 char	*ft_utoa_base(unsigned long lnb, char *base);
-int             ft_printf(const char *str, ...);
+int		ft_printf(const char *str, ...);
 char	*ft_str_rm_dup(char *str, char c);
 
 //printf utils
-int             ft_printlen(const char *str);
-int             ft_print_char(va_list args);
-int             ft_print_str(va_list args);
-int             ft_print_nbr(va_list args, const char format, char *flag_buffer);
-int             ft_printnbr_base16(va_list args, char *base, char *flag_buffer);
-int             ft_print_ptr(va_list args);
-int             ft_check_flags(const char *format);
-char    *ft_get_flag(const char *format);
+int		ft_printlen(const char *str);
+int		ft_print_char(va_list args);
+int		ft_print_str(va_list args);
+int		ft_print_nbr(va_list args, const char format, char *flag_buffer);
+int		ft_printnbr_base16(va_list args, char *base, char *flag_buffer);
+int		ft_print_ptr(va_list args);
+int		ft_check_flags(const char *format);
+char	*ft_get_flag(const char *format);
 
 #endif 

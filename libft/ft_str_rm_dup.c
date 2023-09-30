@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 14:52:54 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/27 15:14:32 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:59:54 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_str_rm_dup(char *str, char c)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 	char	buffer[1024];
 	char	*ptr;
 

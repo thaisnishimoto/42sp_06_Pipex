@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 16:08:54 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/06/19 12:54:38 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:59:28 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,11 @@ char	*ft_get_next_line(int fd)
 	{
 		free(backup[fd]);
 		backup[fd] = NULL;
-	}	
+	}
 	if (line && ft_strchr(line, '\n'))
 	{
-			backup[fd] = save_remainder(line);
-			line = get_line(line);
+		backup[fd] = save_remainder(line);
+		line = get_line(line);
 	}
 	free(buffer);
 	return (line);
