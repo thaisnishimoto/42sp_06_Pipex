@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/01 12:48:28 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/09/13 16:20:23 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/09/29 15:56:15 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,16 +14,25 @@
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
-LIBFT = -L$(LIB_PATH) -lft
+LIBFT_FLAG = -L$(LIB_PATH) -lft
 MAKE_NO_PRINT = $(MAKE) --no-print-directory
+
+#================================PATHS=========================================#
+
+LIB_PATH = ./libft/
+HEADER_PATH = ./include
+SRC_PATH = ./src
+BONUS_PATH = ./src_bonus
 
 #================================FILES=========================================#
 
 NAME = pipex
-SRC = $(wildcard *.c)
+SRC = $(wildcard $(SRC_PATH)/*.c)
 OBJ = $(SRC:.c=.o)
-HEADER = $(wildcard *.h)
-LIB_PATH = ./libft/
+SRC_BONUS = $(wildcard $(BONUS_PATH)/*.c)
+OBJ_BONUS = $(SRC_BONUS:.c=.o)
+HEADER = $(HEADER_PATH)/pipex.h
+HEADER_BONUS = $(HEADER_PATH)/pipex_bonus.h
 
 #================================RULES=========================================#
 
@@ -33,9 +42,15 @@ libft:
 	$(MAKE_NO_PRINT) -C $(LIB_PATH)
 
 $(NAME): $(OBJ) $(HEADER)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT_FLAG)
 
-%.o: %.c
+$(SRC_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+bonus: libft $(OBJ_BONUS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_BONUS) $(LIBFT_FLAG)
+
+$(BONUS_PATH)/%.o: $(BONUS_PATH)/%.c $(HEADER_BONUS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run:
@@ -57,7 +72,7 @@ gdb:
 #================================CLEAN=========================================#
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ) $(OBJ_BONUS)
 	$(MAKE_NO_PRINT) clean -C $(LIB_PATH)
 
 fclean: clean
@@ -66,4 +81,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all libft run leak gdb clean fclean re
+rebonus: fclean bonus
+
+.PHONY: all libft bonus run leak gdb clean fclean re
