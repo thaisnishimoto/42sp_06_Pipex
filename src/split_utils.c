@@ -6,12 +6,11 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:17:58 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/28 17:24:51 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/29 13:19:56 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
-#include "pipex.h"
+#include "../include/pipex.h"
 
 static size_t	ft_preserve_quoted_substr(char const *str);
 

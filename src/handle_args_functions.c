@@ -6,12 +6,11 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/28 18:21:53 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/29 13:18:46 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
-#include "pipex.h"
+#include "../include/pipex.h"
 
 void	handle_argc_and_envp(int argc, char *envp[], t_data *pipex)
 {

@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/28 18:38:29 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/09/29 13:56:37 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <sys/types.h> //pid_t
 # include <sys/wait.h> //wait
 # include <errno.h> //perror
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_fd
 {
