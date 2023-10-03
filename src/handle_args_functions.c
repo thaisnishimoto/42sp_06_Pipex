@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:51:40 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/29 13:18:46 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:59:17 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_split_paths(char const *s, char c, t_data *pipex)
 	pipex->path_count = ft_count_args(s, ':');
 	pipex->path = malloc((pipex->path_count + 1) * sizeof(char *));
 	if (pipex->path == NULL)
-		ft_handle_perror("malloc failed");
+		ft_handle_error("malloc failed", NULL, NULL, 0);
 	i = 0;
 	j = 0;
 	while (j < pipex->path_count)
@@ -46,7 +46,7 @@ void	ft_split_paths(char const *s, char c, t_data *pipex)
 		if (pipex->path[j] == NULL)
 		{
 			ft_free_matrix(pipex->path, --j);
-			ft_handle_perror("malloc failed");
+			ft_handle_error("malloc failed", NULL, NULL, 0);
 		}
 		ft_strlcpy(pipex->path[j], &s[i], ft_arg_len(&s[i], c) + 1);
 		ft_strlcat(pipex->path[j], "/", ft_arg_len(&s[i], c) + 2);
@@ -64,7 +64,7 @@ void	ft_split_cmd(char const *s, char c, t_cmd *cmd)
 	cmd->args_count = ft_count_args(s, ' ');
 	cmd->args = malloc((cmd->args_count + 1) * sizeof(char *));
 	if (cmd->args == NULL)
-		ft_handle_perror("malloc failed");
+		ft_handle_error("malloc failed", NULL, NULL, 0);
 	i = 0;
 	j = 0;
 	while (j < cmd->args_count)
@@ -75,7 +75,7 @@ void	ft_split_cmd(char const *s, char c, t_cmd *cmd)
 		if (cmd->args[j] == NULL)
 		{
 			ft_free_matrix(cmd->args, --j);
-			ft_handle_perror("malloc failed");
+			ft_handle_error("malloc failed", NULL, NULL, 0);
 		}
 		ft_strlcpy(cmd->args[j], &s[i], ft_arg_len(&s[i], c) + 1);
 		cmd->args[j] = ft_trim_quotes(cmd->args[j], "\'\"");
@@ -110,6 +110,6 @@ void	test_cmd_permission(char **path, t_cmd *cmd)
 			break ;
 		}
 		else
-			break ;
+			return ;
 	}
 }
