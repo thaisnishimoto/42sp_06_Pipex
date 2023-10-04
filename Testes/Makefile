@@ -6,11 +6,12 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/28 20:22:45 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/09/12 00:14:46 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/10/04 17:17:12 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = tester
+B_NAME = tester_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 
 SRC = $(wildcard *.c)
@@ -19,7 +20,7 @@ LIBFT = -L../libft -lft
 
 all: pipex $(NAME)
 	./$(NAME)
-	make --no-print clean
+	make --no-print fclean
 pipex:
 	$(MAKE) -C ../ 
 
@@ -27,15 +28,17 @@ $(NAME): $(SRC)
 	$(CC) $(CFLAGS) -o $(NAME) $(SRC) -lrt -lm $(LIBFT)
 
 bonus:
-	$(CC) -g3 $(CFLAGS)-D BUFFER_SIZE=$(BUFFER_SIZE) test_gnl.c $(BONUS) -lrt -lm -o $(NAME)
-	./program
+	$(MAKE) bonus -C ../ 
+	$(CC) $(CFLAGS) -o $(B_NAME) $(BONUS) -lrt -lm $(LIBFT)
+	./$(B_NAME)
+	make --no-print fclean
 
 clean:
 	rm -f *.o
 	rm -f ../outfile*
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(B_NAME)
 
 re: fclean all
 
