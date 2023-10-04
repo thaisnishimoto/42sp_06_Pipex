@@ -6,12 +6,12 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 15:46:55 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:48:17 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <unistd.h> //pipe, dup, access, execve, fork
 # include <stdlib.h> //malloc, exit
@@ -27,13 +27,6 @@ typedef struct s_fd
 	int	outfile;
 	int	**pipe;
 }	t_fd;
-
-//typedef struct s_fork
-//{
-//	pid_t	*id;
-//	int	wstatus;
-//	int		exit_code;
-//}	t_fork;
 
 typedef struct s_cmd
 {
@@ -52,23 +45,22 @@ typedef struct s_data
 	int		argc;
 	t_cmd	cmd;
 	pid_t	*pid;
-	int	wstatus;
+	int		wstatus;
 	int		exit_code;
+	char	**envp;
 }	t_data;
 
-/*Pipe functions*/
-//void	exec_first_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-//void	exec_mid_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-//void	exec_last_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-int		redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex);
-void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex);
-
-/*Handle args functions*/
+/*Main functions*/
 void	handle_argc_and_envp(int argc, char *envp[], t_data *pipe);
 void	ft_split_paths(char const *s, char c, t_data *pipe);
-void	ft_split_cmd(char const *s, char c, t_cmd *cmd);
+void	create_pipes(int argc, t_fd *fd, t_data *pipex);
+
+/*Exec functions*/
+void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex);
+void	ft_split_cmd(char *s, char c, t_data *pipex, t_fd *fd);
 void	test_cmd_permission(char **path, t_cmd *cmd);
+int		redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex);
+void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex);
 
 /*Split utils*/
 int		ft_count_args(const char *s, char c);
@@ -77,8 +69,8 @@ char	*ft_trim_quotes(char *s1, const char *set);
 
 /*Exit utils*/
 void	ft_free_matrix(char **array, int j);
-void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage);
 void	ft_close_pipes(int **pipe, int count);
+void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage);
 void	wait_finish_pipe(t_fd *fd, t_data *pipex);
 
 #endif

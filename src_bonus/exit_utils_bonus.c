@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:45:50 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 12:41:50 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:28:45 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,12 @@ void	ft_free_matrix(char **array, int size)
 	int	i;
 
 	i = 0;
-	while (i <= size)
+	while (i < size)
 	{
 		free(array[i]);
 		i++;
 	}
 	free(array);
-}
-
-void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage)
-{
-	if (stage >= 1)
-	{
-		ft_free_matrix(pipex->path, pipex->path_count);
-		if (stage >= 2)
-			ft_close_pipes(fd->pipe, pipex->pipe_count);
-		if (stage == 3)
-			free(pipex->pid);
-		if (stage == 4)
-			ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
-	}
-	perror(error_msg);
-	exit(EXIT_FAILURE);
 }
 
 void	ft_close_pipes(int **pipe, int count)
@@ -54,6 +38,22 @@ void	ft_close_pipes(int **pipe, int count)
 		i++;
 	}
 	free(pipe);
+}
+
+void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage)
+{
+	if (stage >= 1)
+	{
+		ft_free_matrix(pipex->path, pipex->path_count);
+		if (stage >= 2)
+			ft_close_pipes(fd->pipe, pipex->pipe_count);
+		if (stage >= 3)
+			free(pipex->pid);
+		if (stage == 4)
+			ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
+	}
+	perror(error_msg);
+	exit(EXIT_FAILURE);
 }
 
 void	wait_finish_pipe(t_fd *fd, t_data *pipex)
@@ -73,4 +73,5 @@ void	wait_finish_pipe(t_fd *fd, t_data *pipex)
 	else if (WIFSIGNALED(pipex->wstatus))
 		pipex->exit_code = WTERMSIG(pipex->wstatus);
 	ft_free_matrix(pipex->path, pipex->path_count);
+	free(pipex->pid);
 }

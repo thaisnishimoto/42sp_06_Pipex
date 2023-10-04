@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 17:03:53 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:50:00 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex)
 		if (fd->infile < 0)
 		{
 			ft_printf("%s: ", argv[1]);
-			ft_handle_error("", pipex, fd, 2);
+			ft_handle_error("", pipex, fd, 3);
 		}
 	}
 	else if (i == pipex->cmd_count - 1)
@@ -29,9 +29,38 @@ void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex)
 		if (fd->outfile < 0)
 		{
 			ft_printf("%s: ", argv[pipex->argc - 1]);
-			ft_handle_error("", pipex, fd, 2);
+			ft_handle_error("", pipex, fd, 3);
 		}
 	}
+}
+
+void	ft_split_cmd(char *s, char c, t_data *pipex, t_fd *fd)
+{
+	int		i;
+	int		j;
+
+	pipex->cmd.args_count = ft_count_args(s, ' ');
+	pipex->cmd.args = malloc((pipex->cmd.args_count + 1) * sizeof(char *));
+	if (pipex->cmd.args == NULL)
+		ft_handle_error("malloc failed", pipex, fd, 3);
+	i = 0;
+	j = 0;
+	while (j < pipex->cmd.args_count)
+	{
+		while (s[i] == c)
+			i++;
+		pipex->cmd.args[j] = malloc((ft_arg_len(&s[i], c) + 1) * sizeof(char));
+		if (pipex->cmd.args[j] == NULL)
+		{
+			ft_free_matrix(pipex->cmd.args, j);
+			ft_handle_error("malloc failed", pipex, fd, 3);
+		}
+		ft_strlcpy(pipex->cmd.args[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		pipex->cmd.args[j] = ft_trim_quotes(pipex->cmd.args[j], "\'\"");
+		i = i + ft_arg_len(&s[i], c);
+		j++;
+	}
+	pipex->cmd.args[j] = NULL;
 }
 
 void	test_cmd_permission(char **path, t_cmd *cmd)
@@ -91,11 +120,11 @@ int	redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex)
 	return (0);
 }
 
-void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[])
+void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex)
 {
 	open_in_out_file(i, &fd, argv, pipex);
 	pipex->cmd.args_count = ft_count_args(argv[i + 2], ' ');
-	ft_split_cmd(argv[i + 2], ' ', &pipex->cmd);
+	ft_split_cmd(argv[i + 2], ' ', pipex, &fd);
 	test_cmd_permission(pipex->path, &pipex->cmd);
 	if (pipex->cmd.exit_code == 127)
 		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
@@ -105,11 +134,11 @@ void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[])
 		ft_handle_error("dup2 error", pipex, &fd, 4);
 	if (pipex->cmd.exit_code == 0)
 	{
-		execve(pipex->cmd.pathname, pipex->cmd.args, envp);
+		execve(pipex->cmd.pathname, pipex->cmd.args, pipex->envp);
 		pipex->cmd.exit_code = -1;
 	}
 	ft_free_matrix(pipex->path, pipex->path_count);
 	ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
+	free(pipex->pid);
 	exit(pipex->cmd.exit_code);
 }
-

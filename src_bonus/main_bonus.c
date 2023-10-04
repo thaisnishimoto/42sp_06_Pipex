@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 17:02:43 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:48:48 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,36 @@ void	handle_argc_and_envp(int argc, char *envp[], t_data *pipex)
 	while (ft_strnstr(envp[i], "PATH=", 5) == NULL)
 		i++;
 	ft_split_paths(envp[i] + 5, ':', pipex);
+	pipex->envp = envp;
+}
+
+void	ft_split_paths(char const *s, char c, t_data *pipex)
+{
+	int		i;
+	int		j;
+
+	pipex->path_count = ft_count_args(s, ':');
+	pipex->path = malloc((pipex->path_count + 1) * sizeof(char *));
+	if (pipex->path == NULL)
+		ft_handle_error("malloc failed", NULL, NULL, 0);
+	i = 0;
+	j = 0;
+	while (j < pipex->path_count)
+	{
+		while (s[i] == c)
+			i++;
+		pipex->path[j] = malloc((ft_arg_len(&s[i], c) + 2) * sizeof(char));
+		if (pipex->path[j] == NULL)
+		{
+			ft_free_matrix(pipex->path, j);
+			ft_handle_error("malloc failed", NULL, NULL, 0);
+		}
+		ft_strlcpy(pipex->path[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		ft_strlcat(pipex->path[j], "/", ft_arg_len(&s[i], c) + 2);
+		i = i + ft_arg_len(&s[i], c);
+		j++;
+	}
+	pipex->path[j] = NULL;
 }
 
 void	create_pipes(int argc, t_fd *fd, t_data *pipex)
@@ -45,7 +75,7 @@ void	create_pipes(int argc, t_fd *fd, t_data *pipex)
 		if (fd->pipe[i] == NULL)
 		{
 			ft_close_pipes(fd->pipe, i);
-			ft_handle_error("malloc for pipes failed", pipex, fd, 1);
+			ft_handle_error("malloc for pipe fd failed", pipex, fd, 1);
 		}
 		if (pipe(fd->pipe[i]) == -1)
 		{
@@ -75,13 +105,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (pipex.pid[i] < 0)
 			ft_handle_error("fork error", &pipex, &fd, 3);
 		if (pipex.pid[i] == 0)
-		{
-			free(pipex.pid);
-			exec_cmd(i, fd, argv, &pipex, envp);
-		}
+			exec_cmd(i, fd, argv, &pipex);
 		i++;
 	}
 	wait_finish_pipe(&fd, &pipex);
-	free(pipex.pid);
 	return (pipex.exit_code);
 }
