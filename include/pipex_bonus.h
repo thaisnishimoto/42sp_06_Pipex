@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 12:38:22 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:46:55 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ typedef struct s_data
 }	t_data;
 
 /*Pipe functions*/
-void	exec_first_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-void	exec_mid_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-void	exec_last_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
-int		redirect_stdin_stdout(int new_stdin, int new_stdout, t_fd *fd, t_data *pipex);
+//void	exec_first_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
+//void	exec_mid_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
+void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
+//void	exec_last_cmd(int i, t_fd fd, char *argv[], t_data *pipex, char *envp[]);
+int		redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex);
+void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex);
 
 /*Handle args functions*/
 void	handle_argc_and_envp(int argc, char *envp[], t_data *pipe);
