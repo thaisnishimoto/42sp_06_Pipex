@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/03 16:37:27 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:44:18 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 
 void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 {
-	fd.outfile = open(argv[4], O_WRONLY | O_CREAT, 0777);
+	fd.outfile = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (fd.outfile < 0)
 	{
 		ft_printf("%s: ", argv[4]);
