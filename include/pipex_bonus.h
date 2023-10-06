@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 20:48:17 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/06 13:04:47 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h> //wait
 # include <errno.h> //perror
 # include "../libft/libft.h"
+# include <stdbool.h>
 
 typedef struct s_fd
 {
@@ -36,6 +37,15 @@ typedef struct s_cmd
 	int		exit_code;
 }	t_cmd;
 
+typedef struct s_hdoc
+{
+	int		flag;
+	char	*eof;
+	int		eof_len;
+	char	*line;
+	int		pipe[2];
+}	t_hdoc;
+
 typedef struct s_data
 {
 	char	**path;
@@ -48,6 +58,8 @@ typedef struct s_data
 	int		wstatus;
 	int		exit_code;
 	char	**envp;
+	t_hdoc	heredoc;
+	int		cmd_offset;
 }	t_data;
 
 /*Main functions*/
@@ -56,7 +68,8 @@ void	ft_split_paths(char const *s, char c, t_data *pipe);
 void	create_pipes(int argc, t_fd *fd, t_data *pipex);
 
 /*Exec functions*/
-void	open_in_out_file(int i, t_fd *fd, char *argv[], t_data *pipex);
+void	open_infile(t_fd *fd, char *argv[], t_data *pipex, t_hdoc *heredoc);
+void	open_outfile(t_fd *fd, char *argv[], t_data *pipex);
 void	ft_split_cmd(char *s, char c, t_data *pipex, t_fd *fd);
 void	test_cmd_permission(char **path, t_cmd *cmd);
 int		redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex);

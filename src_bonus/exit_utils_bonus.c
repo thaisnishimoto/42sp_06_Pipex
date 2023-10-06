@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:45:50 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 20:28:45 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/06 13:05:18 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,4 @@ void	wait_finish_pipe(t_fd *fd, t_data *pipex)
 	else if (WIFSIGNALED(pipex->wstatus))
 		pipex->exit_code = WTERMSIG(pipex->wstatus);
 	ft_free_matrix(pipex->path, pipex->path_count);
-	free(pipex->pid);
-}
+	free(pipex->pid);}
