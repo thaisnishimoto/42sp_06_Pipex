@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/06 11:49:00 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 00:09:17 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	open_outfile(t_fd *fd, char *argv[], t_data *pipex)
 void	test_cmd_permission(char **path, t_cmd *cmd)
 {
 	int	i;
+	char	*temp;
 
 	i = 0;
 	while (path[i])
@@ -77,7 +78,12 @@ void	test_cmd_permission(char **path, t_cmd *cmd)
 		if (cmd->args[0][0] == '/')
 			cmd->pathname = ft_str_rm_dup(cmd->args[0], '/');
 		else
-			cmd->pathname = ft_strjoin(path[i], cmd->args[0]);
+		{
+			temp = ft_strjoin(path[i], "/");
+			cmd->pathname = ft_strjoin(temp, cmd->args[0]);
+			free(temp);
+			ft_printf("pathname: %s\n", cmd->pathname);
+		}
 		if (access(cmd->pathname, F_OK) == -1)
 		{
 			cmd->exit_code = 127;

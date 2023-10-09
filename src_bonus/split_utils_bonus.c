@@ -1,18 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_utils.c                                      :+:      :+:    :+:   */
+/*   split_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:17:58 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/09/29 13:19:56 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 00:10:54 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
 static size_t	ft_preserve_quoted_substr(char const *str);
+
+char	**ft_split_args(char const *s, char c)
+{
+	char	**array;
+	int		i;
+	int		j;
+
+	array = malloc((ft_count_args(s, c) + 1) * sizeof(char *));
+	if (array == NULL)
+		return (NULL);
+	i = 0;
+	j = -1;
+	while (++j < ft_count_args(s, c))
+	{
+		while (s[i] == c)
+			i++;
+		array[j] = malloc((ft_arg_len(&s[i], c) + 1) * sizeof(char));
+		if (array[j] == NULL)
+		{
+			ft_free_matrix(array, j);
+			return (NULL);
+		}
+		ft_strlcpy(array[j], &s[i], ft_arg_len(&s[i], c) + 1);
+		array[j] = ft_trim_quotes(array[j], "\'\"");
+		i = i + ft_arg_len(&s[i], c);
+	}
+	array[j] = NULL;
+	return (array);
+}
 
 int	ft_count_args(char const *s, char c)
 {

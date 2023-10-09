@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/06 12:58:01 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 00:55:17 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	handle_argc_and_envp(int argc, char *envp[], t_data *pipex)
 	pipex->argc = argc;
 	while (ft_strnstr(envp[i], "PATH=", 5) == NULL)
 		i++;
-	ft_split_paths(envp[i] + 5, ':', pipex);
+	pipex->path_count = ft_count_args(envp[i] + 5, ':');
+	pipex->path = ft_split_args(envp[i] + 5, ':');
 	pipex->envp = envp;
 }
 
@@ -85,8 +86,8 @@ void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex)
 		open_infile(&fd, argv, pipex, &pipex->heredoc);
 	if (i == pipex->cmd_count - 1)
 		open_outfile(&fd, argv, pipex);
-	pipex->cmd.args_count = ft_count_args(argv[i + pipex->cmd_offset], ' ');
-	ft_split_cmd(argv[i + pipex->cmd_offset], ' ', pipex, &fd);
+	pipex->cmd.args_count = ft_count_args(argv[i+ pipex->cmd_offset], ' ');
+	pipex->cmd.args = ft_split_args(argv[i + pipex->cmd_offset], ' ');
 	test_cmd_permission(pipex->path, &pipex->cmd);
 	if (pipex->cmd.exit_code == 127)
 		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
@@ -120,6 +121,7 @@ int	main(int argc, char *argv[], char *envp[])
 	i = 0;
 	while (i < pipex.cmd_count)
 	{
+//		ft_split_cmd222222222222(argv[i + pipex->cmd_offset], ' ', pipex, &fd);
 		pipex.pid[i] = fork();
 		if (pipex.pid[i] < 0)
 			ft_handle_error("fork error", &pipex, &fd, 3);

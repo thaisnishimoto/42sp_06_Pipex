@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/06 13:04:47 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/08 23:27:30 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 	int		pipe_count;
 	int		argc;
 	t_cmd	cmd;
+//	char	***cmd_args;
 	pid_t	*pid;
 	int		wstatus;
 	int		exit_code;
@@ -64,13 +65,14 @@ typedef struct s_data
 
 /*Main functions*/
 void	handle_argc_and_envp(int argc, char *envp[], t_data *pipe);
-void	ft_split_paths(char const *s, char c, t_data *pipe);
+//void	ft_split_paths(char const *s, char c, t_data *pipe);
+char	**ft_split_args(char const *s, char c);
 void	create_pipes(int argc, t_fd *fd, t_data *pipex);
 
 /*Exec functions*/
 void	open_infile(t_fd *fd, char *argv[], t_data *pipex, t_hdoc *heredoc);
 void	open_outfile(t_fd *fd, char *argv[], t_data *pipex);
-void	ft_split_cmd(char *s, char c, t_data *pipex, t_fd *fd);
+//void	ft_split_cmd(char *s, char c, t_data *pipex, t_fd *fd);
 void	test_cmd_permission(char **path, t_cmd *cmd);
 int		redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex);
 void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex);
