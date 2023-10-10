@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 22:59:39 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:15:07 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_data
 
 /*Main functions*/
 void	check_argc_and_heredoc(int argc, char *argv[], t_data *pipe);
-void	get_path(char *envp[], t_data *pipe);
+void	get_path(char *envp[], t_data *pipex);
 void	get_cmd_args(char *argv[], t_data *pipex);
 void	create_pipes(t_fd *fd, t_data *pipex);
 
