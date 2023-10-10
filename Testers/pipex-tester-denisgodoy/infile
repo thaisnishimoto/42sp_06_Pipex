@@ -1,0 +1,12 @@
+total 96
+drwxr-xr-x  4 tmina-ni candidate  4096 Oct 10 15:46 .
+drwxr-xr-x 11 tmina-ni candidate  4096 Oct 10 15:44 ..
+-rw-r--r--  1 tmina-ni candidate   108 Oct 10 15:43 fn_allowed
+-rw-r--r--  1 tmina-ni candidate    69 Oct 10 15:45 fn_used
+drwxr-xr-x  8 tmina-ni candidate  4096 Oct 10 15:43 .git
+-rwxrwxrwx  1 tmina-ni candidate     0 Oct 10 15:46 infile
+-rw-r--r--  1 tmina-ni candidate   160 Oct 10 15:43 Makefile
+drwxr-xr-x  2 tmina-ni candidate  4096 Oct 10 15:46 output
+-rwxr-xr-x  1 tmina-ni candidate 41208 Oct 10 15:46 pipex
+-rw-r--r--  1 tmina-ni candidate   176 Oct 10 15:43 README.md
+-rwxr-xr-x  1 tmina-ni candidate 18826 Oct 10 15:43 test.sh

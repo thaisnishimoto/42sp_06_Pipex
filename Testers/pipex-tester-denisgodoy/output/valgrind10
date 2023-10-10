@@ -1,0 +1,33 @@
+==110994== Memcheck, a memory error detector
+==110994== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==110994== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==110994== Command: ./pipex infile ls-l grepzao\ x output/valgrind
+==110994== Parent PID: 110791
+==110994== 
+==110995== 
+==110995== HEAP SUMMARY:
+==110995==     in use at exit: 0 bytes in 0 blocks
+==110995==   total heap usage: 64 allocs, 64 frees, 911 bytes allocated
+==110995== 
+==110995== All heap blocks were freed -- no leaks are possible
+==110995== 
+==110995== For lists of detected and suppressed errors, rerun with: -s
+==110995== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==110996== 
+==110996== HEAP SUMMARY:
+==110996==     in use at exit: 0 bytes in 0 blocks
+==110996==   total heap usage: 64 allocs, 64 frees, 941 bytes allocated
+==110996== 
+==110996== All heap blocks were freed -- no leaks are possible
+==110996== 
+==110996== For lists of detected and suppressed errors, rerun with: -s
+==110996== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==110994== 
+==110994== HEAP SUMMARY:
+==110994==     in use at exit: 0 bytes in 0 blocks
+==110994==   total heap usage: 54 allocs, 54 frees, 738 bytes allocated
+==110994== 
+==110994== All heap blocks were freed -- no leaks are possible
+==110994== 
+==110994== For lists of detected and suppressed errors, rerun with: -s
+==110994== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

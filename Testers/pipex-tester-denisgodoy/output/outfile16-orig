@@ -1,0 +1,12 @@
+total 96
+drwXr-Xr-X  4 tm na-n  cand dat   4096 Oct 10 15:46 .
+drwXr-Xr-X 11 tm na-n  cand dat   4096 Oct 10 15:44 ..
+-rw-r--r--  1 tm na-n  cand dat    108 Oct 10 15:43 fn_allow d
+-rw-r--r--  1 tm na-n  cand dat     69 Oct 10 15:45 fn_us d
+drwXr-Xr-X  8 tm na-n  cand dat   4096 Oct 10 15:43 .g t
+-rwXrwXrwX  1 tm na-n  cand dat      0 Oct 10 15:46  nf l 
+-rw-r--r--  1 tm na-n  cand dat    160 Oct 10 15:43 Mak f l 
+drwXr-Xr-X  2 tm na-n  cand dat   4096 Oct 10 15:46 outPut
+-rwXr-Xr-X  1 tm na-n  cand dat  41208 Oct 10 15:46 P P X
+-rw-r--r--  1 tm na-n  cand dat    176 Oct 10 15:43 README.md
+-rwXr-Xr-X  1 tm na-n  cand dat  18826 Oct 10 15:43 t st.sh
