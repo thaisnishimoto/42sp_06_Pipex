@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:45:50 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 22:40:07 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:52:58 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,7 @@ void	wait_finish_pipe(t_fd *fd, t_data *pipex)
 	}
 	ft_free_pipex(pipex, fd, 2);
 	free(pipex->pid);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 22:45:50 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 13:39:35 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,10 @@ void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex)
 		open_infile(&fd, argv, pipex, &pipex->heredoc);
 	if (i == pipex->cmd_count - 1)
 		open_outfile(&fd, argv, pipex);
-	test_cmd_permission(pipex->path, pipex->cmd_args[i], pipex);
+	if (pipex->cmd_args[i][0] == 0)
+		pipex->exit_code = 126;
+	else
+		test_cmd_permission(pipex->path, pipex->cmd_args[i], pipex);
 	if (redirect_stdin_stdout(i, &fd, pipex) == -1)
 		ft_handle_error("dup2 error", pipex, &fd, 4);
 	if (pipex->exit_code == 0)
@@ -137,6 +140,9 @@ void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex)
 		execve(pipex->pathname, pipex->cmd_args[i], pipex->envp);
 		pipex->exit_code = -1;
 	}
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	ft_free_pipex(pipex, &fd, 2);
 	free(pipex->pid);
 	exit(pipex->exit_code);

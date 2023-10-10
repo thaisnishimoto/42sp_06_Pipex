@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 22:48:12 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:53:04 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	get_cmd_args(char *argv[], t_data *pipex)
 	{
 		pipex->args_count[i] = ft_count_args(argv[i + pipex->cmd_offset], ' ');
 		pipex->cmd_args[i] = ft_split_args(argv[i + pipex->cmd_offset], ' ');
-		if (pipex->path == NULL)
+		if (pipex->cmd_args[i] == NULL)
 		{
 			free(pipex->cmd_args);
 			free(pipex->args_count);
