@@ -6,117 +6,126 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/10 17:22:54 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:25:43 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	open_file(int i, t_fd *fd, char *argv[], t_data *pipex)
+void	check_argc(int argc, t_data *pipex)
 {
-	if (i == 1)
+	if (argc != 5)
 	{
-		fd->infile = open(argv[1], O_RDONLY);
-		if (fd->infile < 0)
+		ft_printf("Usage: ./pipex infile cmd1 cmd2 outfile\n");
+		exit(EXIT_FAILURE);
+	}
+	pipex->argc = argc;
+}
+
+void	get_path(char *envp[], t_data *pipex)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (ft_strnstr(envp[i], "PATH=", 5) == NULL)
+		i++;
+	pipex->path_count = ft_count_args(envp[i] + 5, ':');
+	pipex->path = ft_split_args(envp[i] + 5, ':');
+	if (pipex->path == NULL)
+		ft_handle_error("split path failed", NULL, NULL, 0);
+	i = 0;
+	while (i < pipex->path_count)
+	{
+		temp = ft_strjoin(pipex->path[i], "/");
+		free(pipex->path[i]);
+		pipex->path[i] = ft_strdup(temp);
+		free(temp);
+		i++;
+	}
+	pipex->envp = envp;
+}
+
+void	get_cmd_args(char *argv[], t_data *pipex)
+{
+	int	i;
+
+	pipex->cmd_count = pipex->argc - 3;
+	pipex->cmd_args = ft_calloc((pipex->cmd_count + 1), sizeof(char **));
+	if (pipex->cmd_args == NULL)
+		ft_handle_error("cmd calloc failed", pipex, NULL, 1);
+	pipex->args_count = ft_calloc((pipex->cmd_count + 1), sizeof(int));
+	if (pipex->args_count == NULL)
+	{
+		free(pipex->cmd_args);
+		ft_handle_error("args count calloc failed", pipex, NULL, 1);
+	}
+	i = 0;
+	while (i < pipex->cmd_count)
+	{
+		pipex->args_count[i] = ft_count_args(argv[i + 2], ' ');
+		pipex->cmd_args[i] = ft_split_args(argv[i + 2], ' ');
+		if (pipex->cmd_args[i] == NULL)
 		{
-			ft_printf("%s: ", argv[1]);
-			ft_handle_error("", pipex, fd, 2);
+			free(pipex->cmd_args);
+			free(pipex->args_count);
+			ft_handle_error("split cmd failed", pipex, NULL, 1);
 		}
+		i++;
 	}
-	else if (i == 2)
+}
+
+void	create_pipes(t_fd *fd, t_data *pipex)
+{
+	int	i;
+
+	pipex->pipe_count = pipex->cmd_count - 1;
+	fd->pipe = malloc((pipex->pipe_count + 1) * sizeof(int *));
+	if (fd->pipe == NULL)
+		ft_handle_error("malloc for pipe ptr failed", pipex, fd, 2);
+	fd->pipe[pipex->pipe_count] = NULL;
+	i = 0;
+	while (i < pipex->pipe_count)
 	{
-		fd->outfile = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
-		if (fd->outfile < 0)
+		fd->pipe[i] = malloc(2 * sizeof(int));
+		if (fd->pipe[i] == NULL)
 		{
-			ft_printf("%s: ", argv[4]);
-			ft_handle_error("", pipex, fd, 2);
+			ft_close_pipes(fd->pipe, i);
+			ft_handle_error("malloc for pipe fd failed", pipex, fd, 2);
 		}
+		if (pipe(fd->pipe[i]) == -1)
+		{
+			free(fd->pipe[i]);
+			ft_close_pipes(fd->pipe, i);
+			ft_handle_error("pipe error", pipex, fd, 2);
+		}
+		i++;
 	}
-}
-
-void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
-{
-	open_file(1, &fd, argv, pipex);
-	pipex->cmd.args_count = ft_count_args(argv[2], ' ');
-	ft_split_cmd(argv[2], ' ', &pipex->cmd);
-	if (pipex->cmd.args[0] == 0)
-		pipex->cmd.exit_code = 126;
-	else
-		test_cmd_permission(pipex->path, &pipex->cmd);
-	if (pipex->cmd.exit_code == 127)
-		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
-	if (pipex->cmd.exit_code == 126)
-		ft_printf("%s: permission denied\n", pipex->cmd.args[0]);
-	if (redirect_stdin_stdout(fd.infile, fd.pipe[1], &fd) == -1)
-		ft_handle_error("dup2 error", pipex, &fd, 3);
-	close(fd.infile);
-	if (pipex->cmd.exit_code == 0)
-	{
-		execve(pipex->cmd.pathname, pipex->cmd.args, envp);
-		pipex->cmd.exit_code = -1;
-	}
-	ft_free_matrix(pipex->path, pipex->path_count);
-	ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
-	ft_close_stdfileno();
-	exit(pipex->cmd.exit_code);
-}
-
-void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
-{
-	open_file(2, &fd, argv, pipex);
-	pipex->cmd.args_count = ft_count_args(argv[3], ' ');
-	ft_split_cmd(argv[3], ' ', &pipex->cmd);
-	if (pipex->cmd.args[0] == 0)
-		pipex->cmd.exit_code = 126;
-	else
-		test_cmd_permission(pipex->path, &pipex->cmd);
-	if (pipex->cmd.exit_code == 127)
-		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
-	if (pipex->cmd.exit_code == 126)
-		ft_printf("%s: permission denied\n", pipex->cmd.args[0]);
-	if (redirect_stdin_stdout(fd.pipe[0], fd.outfile, &fd) == -1)
-		ft_handle_error("dup2 error", pipex, &fd, 3);
-	close(fd.outfile);
-	if (pipex->cmd.exit_code == 0)
-	{
-		execve(pipex->cmd.pathname, pipex->cmd.args, envp);
-		pipex->cmd.exit_code = -1;
-	}
-	ft_free_matrix(pipex->path, pipex->path_count);
-	ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
-	ft_close_stdfileno();
-	exit(pipex->cmd.exit_code);
-}
-
-int	redirect_stdin_stdout(int new_stdin, int new_stdout, t_fd *fd)
-{
-	if (dup2(new_stdin, STDIN_FILENO) == -1)
-		return (-1);
-	if (dup2(new_stdout, STDOUT_FILENO) == -1)
-		return (-1);
-	ft_close_pipe(fd);
-	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_fd	fd;
-	t_fork	process;
 	t_data	pipex;
+	t_fd	fd;
+	int		i;
 
-	handle_argc_and_envp(argc, envp, &pipex);
-	if (pipe(fd.pipe) == -1)
-		ft_handle_error("pipe error", &pipex, &fd, 1);
-	process.id1 = fork();
-	if (process.id1 < 0)
-		ft_handle_error("fork1 error", &pipex, &fd, 2);
-	if (process.id1 == 0)
-		exec_first_cmd(fd, argv, &pipex, envp);
-	process.id2 = fork();
-	if (process.id2 < 0)
-		ft_handle_error("fork2 error", &pipex, &fd, 2);
-	if (process.id2 == 0)
-		exec_second_cmd(fd, argv, &pipex, envp);
-	wait_finish_pipe(&fd, &process, &pipex);
-	return (process.exit_code);
+	check_argc(argc, &pipex);
+	get_path(envp, &pipex);
+	get_cmd_args(argv, &pipex);
+	create_pipes(&fd, &pipex);
+	pipex.pid = malloc(pipex.cmd_count * sizeof(int));
+	if (pipex.pid == NULL)
+		ft_handle_error("malloc for pid error", &pipex, &fd, 3);
+	i = 0;
+	while (i < pipex.cmd_count)
+	{
+		pipex.pid[i] = fork();
+		if (pipex.pid[i] < 0)
+			ft_handle_error("fork error", &pipex, &fd, 4);
+		if (pipex.pid[i] == 0)
+			exec_cmd(i, fd, argv, &pipex);
+		i++;
+	}
+	wait_finish_pipe(&fd, &pipex);
+	return (pipex.exit_code);
 }
