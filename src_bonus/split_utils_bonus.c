@@ -6,13 +6,11 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:17:58 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 00:10:54 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:59:29 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
-
-static size_t	ft_preserve_quoted_substr(char const *str);
+#include "../include/pipex_bonus.h"
 
 char	**ft_split_args(char const *s, char c)
 {
@@ -45,8 +43,8 @@ char	**ft_split_args(char const *s, char c)
 
 int	ft_count_args(char const *s, char c)
 {
-	size_t	index;
-	size_t	count;
+	int	index;
+	int	count;
 
 	index = 0;
 	count = 0;
@@ -102,9 +100,9 @@ char	*ft_trim_quotes(char *str, const char *set)
 	return (ptr);
 }
 
-static size_t	ft_preserve_quoted_substr(char const *str)
+size_t	ft_preserve_quoted_substr(char const *str)
 {
-	int	len;
+	size_t	len;
 
 	len = 0;
 	if (str[len] == '\'')

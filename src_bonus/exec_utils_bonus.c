@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 00:09:17 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:45:50 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	open_infile(t_fd *fd, char *argv[], t_data *pipex, t_hdoc *heredoc)
 		if (fd->infile < 0)
 		{
 			ft_printf("%s: ", argv[1]);
-			ft_handle_error("", pipex, fd, 3);
+			ft_handle_error("", pipex, fd, 4);
 		}
 	}
 	else if (heredoc->flag == 1)
@@ -52,7 +52,7 @@ void	open_outfile(t_fd *fd, char *argv[], t_data *pipex)
 		if (fd->outfile < 0)
 		{
 			ft_printf("%s: ", argv[pipex->argc - 1]);
-			ft_handle_error("", pipex, fd, 3);
+			ft_handle_error("", pipex, fd, 4);
 		}
 	}
 	else if (pipex->heredoc.flag == 1)
@@ -61,39 +61,33 @@ void	open_outfile(t_fd *fd, char *argv[], t_data *pipex)
 		if (fd->outfile < 0)
 		{
 			ft_printf("%s: ", argv[pipex->argc - 1]);
-			ft_handle_error("", pipex, fd, 3);
+			ft_handle_error("", pipex, fd, 4);
 		}
 	}
 }
 
-void	test_cmd_permission(char **path, t_cmd *cmd)
+void	test_cmd_permission(char **path, char **cmd_args, t_data *pipex)
 {
 	int	i;
-	char	*temp;
 
 	i = 0;
 	while (path[i])
 	{
-		cmd->exit_code = 0;
-		if (cmd->args[0][0] == '/')
-			cmd->pathname = ft_str_rm_dup(cmd->args[0], '/');
+		pipex->exit_code = 0;
+		if (cmd_args[0][0] == '/')
+			pipex->pathname = ft_str_rm_dup(cmd_args[0], '/');
 		else
+			pipex->pathname = ft_strjoin(path[i], cmd_args[0]);
+		if (access(pipex->pathname, F_OK) == -1)
 		{
-			temp = ft_strjoin(path[i], "/");
-			cmd->pathname = ft_strjoin(temp, cmd->args[0]);
-			free(temp);
-			ft_printf("pathname: %s\n", cmd->pathname);
-		}
-		if (access(cmd->pathname, F_OK) == -1)
-		{
-			cmd->exit_code = 127;
-			free(cmd->pathname);
+			pipex->exit_code = 127;
+			free(pipex->pathname);
 			i++;
 		}
-		else if (access(cmd->pathname, X_OK) == -1)
+		else if (access(pipex->pathname, X_OK) == -1)
 		{
-			cmd->exit_code = 126;
-			free(cmd->pathname);
+			pipex->exit_code = 126;
+			free(pipex->pathname);
 			break ;
 		}
 		else
@@ -127,4 +121,23 @@ int	redirect_stdin_stdout(int i, t_fd *fd, t_data *pipex)
 	}
 	ft_close_pipes(fd->pipe, pipex->pipe_count);
 	return (0);
+}
+
+void	exec_cmd(int i, t_fd fd, char *argv[], t_data *pipex)
+{
+	if (i == 0)
+		open_infile(&fd, argv, pipex, &pipex->heredoc);
+	if (i == pipex->cmd_count - 1)
+		open_outfile(&fd, argv, pipex);
+	test_cmd_permission(pipex->path, pipex->cmd_args[i], pipex);
+	if (redirect_stdin_stdout(i, &fd, pipex) == -1)
+		ft_handle_error("dup2 error", pipex, &fd, 4);
+	if (pipex->exit_code == 0)
+	{
+		execve(pipex->pathname, pipex->cmd_args[i], pipex->envp);
+		pipex->exit_code = -1;
+	}
+	ft_free_pipex(pipex, &fd, 2);
+	free(pipex->pid);
+	exit(pipex->exit_code);
 }

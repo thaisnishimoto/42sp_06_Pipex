@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:45:50 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/09 00:48:33 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:40:07 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,34 @@ void	ft_close_pipes(int **pipe, int count)
 	free(pipe);
 }
 
-void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage)
+void	ft_free_pipex(t_data *pipex, t_fd *fd, int stage)
 {
+	int	i;
+
+	i = 0;
 	if (stage >= 1)
 	{
 		ft_free_matrix(pipex->path, pipex->path_count);
 		if (stage >= 2)
-			ft_close_pipes(fd->pipe, pipex->pipe_count);
+		{
+			while (i < pipex->cmd_count)
+			{
+				ft_free_matrix(pipex->cmd_args[i], pipex->args_count[i]);
+				i++;
+			}
+			free(pipex->cmd_args);
+			free(pipex->args_count);
+		}
 		if (stage >= 3)
-			free(pipex->pid);
+			ft_close_pipes(fd->pipe, pipex->pipe_count);
 		if (stage == 4)
-			ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
+			free(pipex->pid);
 	}
+}
+
+void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage)
+{
+	ft_free_pipex(pipex, fd, stage);
 	perror(error_msg);
 	exit(EXIT_FAILURE);
 }
@@ -66,11 +82,16 @@ void	wait_finish_pipe(t_fd *fd, t_data *pipex)
 	{
 		if (waitpid(pipex->pid[i], &pipex->wstatus, 0) == -1)
 			ft_handle_error("waitpid error", pipex, fd, 1);
+		if (WIFEXITED(pipex->wstatus))
+			pipex->exit_code = WEXITSTATUS(pipex->wstatus);
+		else if (WIFSIGNALED(pipex->wstatus))
+			pipex->exit_code = WTERMSIG(pipex->wstatus);
+		if (pipex->exit_code == 127)
+			ft_printf("%s: command not found\n", pipex->cmd_args[i][0]);
+		if (pipex->exit_code == 126)
+			ft_printf("%s: permission denied\n", pipex->cmd_args[i][0]);
 		i++;
 	}
-	if (WIFEXITED(pipex->wstatus))
-		pipex->exit_code = WEXITSTATUS(pipex->wstatus);
-	else if (WIFSIGNALED(pipex->wstatus))
-		pipex->exit_code = WTERMSIG(pipex->wstatus);
-	ft_free_matrix(pipex->path, pipex->path_count);
-	free(pipex->pid);}
+	ft_free_pipex(pipex, fd, 2);
+	free(pipex->pid);
+}
