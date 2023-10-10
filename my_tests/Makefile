@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/28 20:22:45 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/10/04 17:17:12 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/10/10 00:45:28 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = tester
 B_NAME = tester_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 
-SRC = $(wildcard *.c)
+SRC = tester_pipex.c
 BONUS = $(wildcard *bonus.c)
 LIBFT = -L../libft -lft
 

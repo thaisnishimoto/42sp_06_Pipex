@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tester_pipex.c                                     :+:      :+:    :+:   */
+/*   tester_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:00:56 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/04 17:05:08 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 00:55:39 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ MU_TEST(funtion_should_run_command_ls_l_wc_l)
 	printf(" TEST 1: ls -l | wc -l");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile ls -l | wc -l > ../outfile_expected");
-	exec_command("../pipex ../infile \"ls -l\" \"wc -l\" ../outfile");
+	exec_command("< infile ls -l | wc -l > ../outfile_expected");
+	exec_command("../pipex infile \"ls -l\" \"wc -l\" ../outfile");
 
 	diff_result = exec_command("diff -s ../outfile ../outfile_expected");
 	ft_printf("%s", diff_result);
@@ -80,8 +80,8 @@ MU_TEST(funtion_should_run_command_grep_a1_wc_w)
 	printf(" TEST 2: grep a1 | wc -w");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile grep a1 | wc -w > ../outfile_expected2");
-	exec_command("../pipex ../infile \"grep a1\" \"wc -w\" ../outfile2");
+	exec_command("< infile grep a1 | wc -w > ../outfile_expected2");
+	exec_command("../pipex infile \"grep a1\" \"wc -w\" ../outfile2");
 
 	diff_result = exec_command("diff -s ../outfile2 ../outfile_expected2");
 	ft_printf("%s", diff_result);
@@ -101,8 +101,8 @@ MU_TEST(funtion_should_run_command_cat_ls_l)
 	printf(" TEST 3: cat | ls -l");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile cat | ls -l > ../outfile_expected3");
-	exec_command("../pipex ../infile \"cat\" \"ls -l\" ../outfile3");
+	exec_command("< infile cat | ls -l > ../outfile_expected3");
+	exec_command("../pipex infile \"cat\" \"ls -l\" ../outfile3");
 
 	diff_result = exec_command("diff -s ../outfile3 ../outfile_expected3");
 	ft_printf("%s", diff_result);
@@ -122,8 +122,8 @@ MU_TEST(funtion_should_run_command_cat_wc)
 	printf(" TEST 4: cat | wc");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile cat | wc > ../outfile_expected4");
-	exec_command("../pipex ../infile \"cat\" \"wc\" ../outfile4");
+	exec_command("< infile cat | wc > ../outfile_expected4");
+	exec_command("../pipex infile \"cat\" \"wc\" ../outfile4");
 
 	diff_result = exec_command("diff -s ../outfile4 ../outfile_expected4");
 	ft_printf("%s", diff_result);
@@ -143,8 +143,8 @@ MU_TEST(funtion_should_run_command_echo_tr)
 	printf(" TEST 5: echo | tr -d");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile echo h_e_l_l_o_ _w_o_r_l_d | tr -d _ > ../outfile_expected5");
-	exec_command("../pipex ../infile \"echo h_e_l_l_o_ _w_o_r_l_d\" \"tr -d _\" ../outfile5");
+	exec_command("< infile echo h_e_l_l_o_ _w_o_r_l_d | tr -d _ > ../outfile_expected5");
+	exec_command("../pipex infile \"echo h_e_l_l_o_ _w_o_r_l_d\" \"tr -d _\" ../outfile5");
 
 	diff_result = exec_command("diff -s ../outfile5 ../outfile_expected5");
 	ft_printf("%s", diff_result);
@@ -164,8 +164,8 @@ MU_TEST(funtion_should_create_outfile_and_run_2nd_command)
 	printf(" TEST 6: invalid infile");
 	printf("\n------------------------\n");
 
-	exec_command("< ../file_x cat | ls > ../outfile_expected6");
-	exec_command("../pipex ../file_x \"cat\" \"ls\" ../outfile6");
+	exec_command("< file_x cat | ls > ../outfile_expected6");
+	exec_command("../pipex file_x \"cat\" \"ls\" ../outfile6");
 
 	diff_result = exec_command("diff -s ../outfile6 ../outfile_expected6");
 	ft_printf("%s", diff_result);
@@ -185,8 +185,8 @@ MU_TEST(funtion_should_run_command_echo_tr_space)
 	printf(" TEST 7: echo | tr space");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile echo \"h e l l o\" | tr -d ' ' > ../outfile_expected7");
-	exec_command("../pipex ../infile \"echo \'h e l l o\'\" \"tr -d ' '\" ../outfile7");
+	exec_command("< infile echo \"h e l l o\" | tr -d ' ' > ../outfile_expected7");
+	exec_command("../pipex infile \"echo \'h e l l o\'\" \"tr -d ' '\" ../outfile7");
 
 	diff_result = exec_command("diff -s ../outfile7 ../outfile_expected7");
 	ft_printf("%s", diff_result);
@@ -203,11 +203,11 @@ MU_TEST(funtion_should_try_run_command_without_x_permission)
 	char    *diff_result;
 
 	printf("\n------------------------\n");
-	printf(" TEST 8: echo | tr space");
+	printf(" TEST 8: cmd not executable");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile grep pipex | /dev/null > ../outfile_expected8");
-	exec_command("../pipex ../infile \"grep pipex\" \"/dev/null\" ../outfile8");
+	exec_command("< infile grep pipex | /dev/null > ../outfile_expected8");
+	exec_command("../pipex infile \"grep pipex\" \"/dev/null\" ../outfile8");
 
 	diff_result = exec_command("diff -s ../outfile8 ../outfile_expected8");
 	ft_printf("%s", diff_result);
@@ -227,8 +227,8 @@ MU_TEST(funtion_should_try_run_command_with_path)
 	printf(" TEST 9: 1st command with path");
 	printf("\n------------------------\n");
 
-	exec_command("< ../infile ///////usr/bin/grep 1 | wc -l > ../outfile_expected9");
-	exec_command("../pipex ../infile \"///////usr/bin/grep 1\" \"wc -l\" ../outfile9");
+	exec_command("< infile ///////usr/bin/grep 1 | wc -l > ../outfile_expected9");
+	exec_command("../pipex infile \"///////usr/bin/grep 1\" \"wc -l\" ../outfile9");
 
 	diff_result = exec_command("diff -s ../outfile9 ../outfile_expected9");
 	ft_printf("%s", diff_result);
