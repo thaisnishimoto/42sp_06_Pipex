@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:45:50 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/03 17:00:53 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:20:25 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ void	ft_close_pipe(t_fd *fd)
 	close(fd->pipe[1]);
 }
 
+void	ft_close_stdfileno(void)
+{
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
+
 void	wait_finish_pipe(t_fd *fd, t_fork *process, t_data *pipex)
 {
 	ft_close_pipe(fd);
@@ -57,4 +64,5 @@ void	wait_finish_pipe(t_fd *fd, t_fork *process, t_data *pipex)
 	else if (WIFSIGNALED(process->wstatus2))
 		process->exit_code = WTERMSIG(process->wstatus2);
 	ft_free_matrix(pipex->path, pipex->path_count);
+	ft_close_stdfileno();
 }

@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/05 14:44:18 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:20:10 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 	}
 	ft_free_matrix(pipex->path, pipex->path_count);
 	ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
+	ft_close_stdfileno();
 	exit(pipex->cmd.exit_code);
 }
 
@@ -65,6 +66,7 @@ void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 	}
 	ft_free_matrix(pipex->path, pipex->path_count);
 	ft_free_matrix(pipex->cmd.args, pipex->cmd.args_count);
+	ft_close_stdfileno();
 	exit(pipex->cmd.exit_code);
 }
 

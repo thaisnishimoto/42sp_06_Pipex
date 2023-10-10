@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/03 16:33:03 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:21:24 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ char	*ft_trim_quotes(char *s1, const char *set);
 
 /*Exit utils*/
 void	ft_free_matrix(char **array, int j);
-//void	ft_handle_perror(char *perror_msg);
 void	ft_handle_error(char *error_msg, t_data *pipex, t_fd *fd, int stage);
 void	ft_close_pipe(t_fd *fd);
+void	ft_close_stdfileno(void);
 void	wait_finish_pipe(t_fd *fd, t_fork *process, t_data *pipex);
 
 #endif
