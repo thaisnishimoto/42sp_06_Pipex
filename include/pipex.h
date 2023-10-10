@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 23:07:52 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/10 15:21:24 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:22:11 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_data
 }	t_data;
 
 /*Pipe functions*/
+void	open_file(int i, t_fd *fd, char *argv[], t_data *pipex);
 void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[]);
 void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[]);
 int		redirect_stdin_stdout(int new_stdin, int new_stdout, t_fd *fd);

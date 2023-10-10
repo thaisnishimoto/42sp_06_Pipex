@@ -6,23 +6,43 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:06:44 by tmina-ni          #+#    #+#             */
-/*   Updated: 2023/10/10 15:20:10 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:22:54 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
+void	open_file(int i, t_fd *fd, char *argv[], t_data *pipex)
+{
+	if (i == 1)
+	{
+		fd->infile = open(argv[1], O_RDONLY);
+		if (fd->infile < 0)
+		{
+			ft_printf("%s: ", argv[1]);
+			ft_handle_error("", pipex, fd, 2);
+		}
+	}
+	else if (i == 2)
+	{
+		fd->outfile = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+		if (fd->outfile < 0)
+		{
+			ft_printf("%s: ", argv[4]);
+			ft_handle_error("", pipex, fd, 2);
+		}
+	}
+}
+
 void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 {
-	fd.infile = open(argv[1], O_RDONLY);
-	if (fd.infile < 0)
-	{
-		ft_printf("%s: ", argv[1]);
-		ft_handle_error("", pipex, &fd, 2);
-	}
+	open_file(1, &fd, argv, pipex);
 	pipex->cmd.args_count = ft_count_args(argv[2], ' ');
 	ft_split_cmd(argv[2], ' ', &pipex->cmd);
-	test_cmd_permission(pipex->path, &pipex->cmd);
+	if (pipex->cmd.args[0] == 0)
+		pipex->cmd.exit_code = 126;
+	else
+		test_cmd_permission(pipex->path, &pipex->cmd);
 	if (pipex->cmd.exit_code == 127)
 		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
 	if (pipex->cmd.exit_code == 126)
@@ -43,15 +63,13 @@ void	exec_first_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 
 void	exec_second_cmd(t_fd fd, char *argv[], t_data *pipex, char *envp[])
 {
-	fd.outfile = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
-	if (fd.outfile < 0)
-	{
-		ft_printf("%s: ", argv[4]);
-		ft_handle_error("", pipex, &fd, 2);
-	}
+	open_file(2, &fd, argv, pipex);
 	pipex->cmd.args_count = ft_count_args(argv[3], ' ');
 	ft_split_cmd(argv[3], ' ', &pipex->cmd);
-	test_cmd_permission(pipex->path, &pipex->cmd);
+	if (pipex->cmd.args[0] == 0)
+		pipex->cmd.exit_code = 126;
+	else
+		test_cmd_permission(pipex->path, &pipex->cmd);
 	if (pipex->cmd.exit_code == 127)
 		ft_printf("%s: command not found\n", pipex->cmd.args[0]);
 	if (pipex->cmd.exit_code == 126)
