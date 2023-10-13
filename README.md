@@ -38,7 +38,7 @@ make
 About the project - bonus part
 </h2>
 
-The program `pipex` should:
+The program `pipex` should also:
 - Handle multiple pipes
 ```sh
 < infile cmd1 | cmd2 | cmd3 ... | cmdn > outfile
@@ -53,13 +53,7 @@ cmd << LIMITER | cmd1 >> outfile
 git clone git@github.com:thaisnishimoto/42sp_06_Pipex.git
 ```
 
-2. Compile and run
-```sh
-make bonus
-./pipex infile cmd1 cmd2 outfile
-```
-
-4. Compile bonus and run for multiple commands or here_doc usage
+2. Compile bonus and run for multiple commands or here_doc usage
 ```sh
 make bonus
 ./pipex infile cmd1 cmd2 [cmd3 ...] outfile
@@ -70,17 +64,18 @@ make bonus
 Error handling
 </h2>
 
-
 <h2>
-Resources
+Resources - testers
 </h2>
 
 I created my own unit test.
 
-Here are a few other third party testers that I found usefull:
+Here are a few other repositories with third party testers that I found usefull: <br>
 
-MiniLibX is a library based on Xlib meant for beginners to learn the basics of graphics development. It allows to run applications on windows, move windows around the screen and click on items. <br>
-It was used to develop this project. So, to run the game, you might need to install [MiniLibX](https://github.com/42Paris/minilibx-linux) on your machine:
-```sh
-sudo apt-get install gcc make xorg libxext-dev libbsd-dev
-```
+[pipex-tester](https://github.com/denisgodoy/pipex-tester): Various error handling cases, tests quoted arguments and checks for memory leak
+
+[PIPEXaminator](https://github.com/mariadaan/PIPEXaminator): A few extra error cases, such as invalid command flag
+
+[teste_pipex](https://github.com/D-Daria/pipex): Additional cases, such as command written with path
+
+[pipex_tester_42](https://github.com/Yoo0lh/pipex_tester_42): A few tests for the bonus part
