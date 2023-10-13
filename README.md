@@ -18,7 +18,7 @@
 Content
 </h2>
 
-[Mandatory](https://github.com/thaisnishimoto/42sp_06_Pipex/edit/master/README.md#about-the-project---mandatory-part)
+[Mandatory](https://github.com/thaisnishimoto/42sp_06_Pipex#about-the-project---mandatory-part)
 
 [Bonus](https://github.com/D-Dashka/pipex#Description)
 
