@@ -18,13 +18,11 @@
 Content
 </h2>
 
-[Mandatory](https://github.com/thaisnishimoto/42sp_06_Pipex#about-the-project---mandatory-part)
+[Mandatory Part](https://github.com/thaisnishimoto/42sp_06_Pipex#about-the-project---mandatory-part)
 
-[Bonus](https://github.com/D-Dashka/pipex#Description)
+[Bonus Part](https://github.com/thaisnishimoto/42sp_06_Pipex#about-the-project---bonus-part)
 
-[Error handling](https://github.com/D-Dashka/pipex#error-management)
-
-[Testers](https://github.com/D-Dashka/pipex#tester)
+[Testers](https://github.com/thaisnishimoto/42sp_06_Pipex#resources---testers)
 
 <h2>
 About the project - mandatory part
@@ -68,16 +66,14 @@ The program `pipex` should also:
 ```sh
 cmd << LIMITER | cmd1 >> outfile
 ```
+
 <h4>
  Compile bonus for multiple commands or here_doc usage
 </h4>
 
 ```sh
 git clone git@github.com:thaisnishimoto/42sp_06_Pipex.git
-```
-```sh
-make bonus
-```
+``` 
 ```sh
 ./pipex infile cmd1 cmd2 [cmd3 ...] outfile
 ```
@@ -86,14 +82,15 @@ make bonus
 ```
 
 <h2>
-Error handling
-</h2>
-
-<h2>
 Resources - testers
 </h2>
 
-I created my own unit test.
+I created my own unit test, with some basic commands. It compares the oufile of `pipex` with the original pipe oufile. <br>
+To run them, copy the directory my_tests() in your projects directory.
+```sh
+cd my_tests
+make
+```
 
 Here are a few other repositories with third party testers that I found usefull: <br>
 
