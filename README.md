@@ -22,7 +22,7 @@ Content
 
 [Bonus Part](https://github.com/thaisnishimoto/42sp_06_Pipex#about-the-project---bonus-part)
 
-[Testers](https://github.com/thaisnishimoto/42sp_06_Pipex#resources---testers)
+[Testers](https://github.com/thaisnishimoto/42sp_06_Pipex#resource---testers)
 
 <h2>
 About the project - mandatory part
@@ -64,15 +64,21 @@ The program `pipex` should also:
 ```
 - Support << and >>
 ```sh
-cmd << LIMITER | cmd1 >> outfile
+cmd1 << LIMITER | cmd2 >> outfile
 ```
+
+`cmd1` - is the first command that will process the input. <br>
+`<< LIMITER` - redirects input from the following lines to be written in the terminal, until there is a line containing only the LIMITER <br>
+`|` - the pipe sends the output of cmd1 as input to cmd2. <br>
+`cmd2` - is the second shell command that will process the input from cmd1. <br>
+`>> outfile` - is used to redirect output to outfile. If outfile doesn't exist, it is created. If it does exist, the output is added to the end of the file, instead of overwriting it. <br>
 
 <h4>
  Compile bonus for multiple commands or here_doc usage
 </h4>
 
 ```sh
-git clone git@github.com:thaisnishimoto/42sp_06_Pipex.git
+make bonus
 ``` 
 ```sh
 ./pipex infile cmd1 cmd2 [cmd3 ...] outfile
@@ -82,14 +88,16 @@ git clone git@github.com:thaisnishimoto/42sp_06_Pipex.git
 ```
 
 <h2>
-Resources - testers
+Resource - testers
 </h2>
 
-I created my own unit test, with some basic commands. It compares the oufile of `pipex` with the original pipe oufile. <br>
-To run them, copy the directory my_tests() in your projects directory.
+I created my own unit test, with some basic commands. It compares the oufile of `pipex` with the original pipe's oufile. <br>
+Don't forget to also compare the exit code with `echo $?` <br>
+To run them, download the directory [my_tests](https://github.com/thaisnishimoto/42sp_06_Pipex/tree/master/my_tests) in your project's directory.
 ```sh
 cd my_tests
 make
+make bonus
 ```
 
 Here are a few other repositories with third party testers that I found usefull: <br>
