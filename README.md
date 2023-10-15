@@ -81,10 +81,10 @@ cmd1 << LIMITER | cmd2 >> outfile
 make bonus
 ``` 
 ```sh
-./pipex infile cmd1 cmd2 [cmd3 ...] outfile
+./pipex_bonus infile cmd1 cmd2 [cmd3 ...] outfile
 ```
 ```sh
-./pipex here_doc LIMITER cmd cmd1 [cmd3 ...] outfile
+./pipex_bonus here_doc LIMITER cmd cmd1 [cmd3 ...] outfile
 ```
 
 <h2>
