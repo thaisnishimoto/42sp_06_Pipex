@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/01 12:48:28 by tmina-ni          #+#    #+#              #
-#    Updated: 2023/09/29 15:56:15 by tmina-ni         ###   ########.fr        #
+#    Updated: 2023/10/15 16:28:34 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ BONUS_PATH = ./src_bonus
 #================================FILES=========================================#
 
 NAME = pipex
+BONUS_NAME = pipex_bonus
 SRC = $(wildcard $(SRC_PATH)/*.c)
 OBJ = $(SRC:.c=.o)
 SRC_BONUS = $(wildcard $(BONUS_PATH)/*.c)
@@ -47,8 +48,10 @@ $(NAME): $(OBJ) $(HEADER)
 $(SRC_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: libft $(OBJ_BONUS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_BONUS) $(LIBFT_FLAG)
+bonus: libft $(BONUS_NAME)
+
+$(BONUS_NAME): $(OBJ_BONUS) $(HEADER_BONUS)
+	$(CC) $(CFLAGS) -o $(BONUS_NAME) $(OBJ_BONUS) $(LIBFT_FLAG)
 
 $(BONUS_PATH)/%.o: $(BONUS_PATH)/%.c $(HEADER_BONUS)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -76,11 +79,11 @@ clean:
 	$(MAKE_NO_PRINT) clean -C $(LIB_PATH)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME)
 	$(MAKE_NO_PRINT) fclean -C $(LIB_PATH)
 
 re: fclean all
 
 rebonus: fclean bonus
 
-.PHONY: all libft bonus run leak gdb clean fclean re
+.PHONY: all libft bonus run leak gdb clean fclean re rebonus
